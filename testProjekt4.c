@@ -23,7 +23,7 @@ const char* timeOfDay[] = { "00:00","01:00","02:00","03:00","04:00","05:00","06:
 void printDemoSchedule(int tasks, int days, event display[tasks][days]);
 void accept(int tasks, int days, event temp[tasks][days], event planned[tasks][days]); 
 void sleep(int tasks, int days, event TempWeekPlan[tasks][days]);
-
+void DoubleBooking(int tasks, int days, event firstPlan[tasks][days], event secondPlan[tasks][days], event tempPlan[tasks][days]);
 
 int main(void) {
     int i, j;
@@ -56,6 +56,8 @@ int main(void) {
 
     //Schedules sleep for all days of the week
     sleep(24, 7, TempWeekPlan);
+
+
     for (j = 0; j < 7; j++) {
         ConstPlan[7][j].value = 1;
         strcpy(ConstPlan[7][j].occasion, "Breakfast");
@@ -70,6 +72,15 @@ int main(void) {
     for (i = 8; i < 17; i++) {
         ConstPlan[i][5].value = 1;
         strcpy(ConstPlan[i][5].occasion, "Work");
+    }
+
+    DoubleBooking(24, 7, ConstPlan, TempWeekPlan, ConstPlan);
+    //Herefter slettes alle events fra TempWeekPlan: 
+    for (j = 0; j < 7; j++) {
+        for (i = 0; i < 24; i++) {
+            TempWeekPlan[i][j].value = event_default.value;
+            strcpy(TempWeekPlan[i][j].occasion, event_default.occasion);
+        }
     }
 
     //Lectio-kalenderen: 
@@ -104,71 +115,10 @@ int main(void) {
         strcpy(SocialPlan[i][6].occasion, "Soccer");
     }
 
-    //De tre arrays af structs l�gges sammen over i TempWeekPlan og der tjekkes for dobbeltbooking:
-    int booking; //TYPE!!
-    int day; 
-    for (j = 0; j < 7; j++) {
-        for (i = 0; i < 24; i++) {
-            if ((ConstPlan[i][j].value == 1) && (SchoolPlan[i][j].value == 1)) {
-                day = j + 1;
-                printf("Warning! You are currently overbooked on %s at %s.\n", weekdays[day], timeOfDay[i]);
-                printf("Do you want to schedule event 1: %s or event 2: %s? Type 1 or 2: ", ConstPlan[i][j].occasion, SchoolPlan[i][j].occasion);
-                scanf("%d", &booking); 
-                if (booking == 1) {
-                    strcpy(TempWeekPlan[i][j].occasion, ConstPlan[i][j].occasion); //Alt dette kan erstattes siden man ikke skal gøre noget i dette tilfælde
-                    TempWeekPlan[i][j].value = 1;
-                }
-                if (booking == 2) {
-                    strcpy(TempWeekPlan[i][j].occasion, SchoolPlan[i][j].occasion);
-                    TempWeekPlan[i][j].value = 1;
-                }
-                //else
-            }
-            if ((ConstPlan[i][j].value == 1) && (SocialPlan[i][j].value == 1)) {
-                day = j + 1;
-                printf("Warning! You are currently overbooked on %s at %s.\n", weekdays[day], timeOfDay[i]);
-                printf("Do you want to schedule event 1: %s or event 2: %s? Type 1 or 2: ", ConstPlan[i][j].occasion, SocialPlan[i][j].occasion);
-                scanf("%d", &booking);
-                if (booking == 1) {
-                    strcpy(TempWeekPlan[i][j].occasion, ConstPlan[i][j].occasion);
-                    TempWeekPlan[i][j].value = 1;
-                }
-                if (booking == 2) {
-                    strcpy(TempWeekPlan[i][j].occasion, SocialPlan[i][j].occasion);
-                    TempWeekPlan[i][j].value = 1;
-                }
-                //else
-            }
-            if ((SocialPlan[i][j].value == 1) && (SchoolPlan[i][j].value == 1)) {
-                day = j + 1; 
-                printf("Warning! You are currently overbooked on %s at %s.\n", weekdays[day], timeOfDay[i]);
-                printf("Do you want to schedule event 1: %s or event 2: %s? Type 1 or 2: ", SocialPlan[i][j].occasion, SchoolPlan[i][j].occasion); //tidspunkt og dag i ugen
-                scanf("%d", &booking);
-                if (booking == 1) {
-                    strcpy(TempWeekPlan[i][j].occasion, SocialPlan[i][j].occasion);
-                    TempWeekPlan[i][j].value = 1;
-                }
-                if (booking == 2) {
-                    strcpy(TempWeekPlan[i][j].occasion, SchoolPlan[i][j].occasion);
-                    TempWeekPlan[i][j].value = 1;
-                }
-                //else
-            }
-            //Vi l�gger resten direkte over i TempWeekPlan[][]
-            else if (SchoolPlan[i][j].value == 1) {
-                strcpy(TempWeekPlan[i][j].occasion, SchoolPlan[i][j].occasion);
-                TempWeekPlan[i][j].value = SchoolPlan[i][j].value;
-            }
-            else if (ConstPlan[i][j].value == 1) {
-                strcpy(TempWeekPlan[i][j].occasion, ConstPlan[i][j].occasion);
-                TempWeekPlan[i][j].value = ConstPlan[i][j].value;
-            }
-            else if (SocialPlan[i][j].value == 1) {
-                strcpy(TempWeekPlan[i][j].occasion, SocialPlan[i][j].occasion);
-                TempWeekPlan[i][j].value = SocialPlan[i][j].value;
-            }    
-        }
-    }
+    //double-booking: 
+    DoubleBooking(24, 7, ConstPlan, SchoolPlan, TempWeekPlan);
+    DoubleBooking(24, 7, ConstPlan, SocialPlan, TempWeekPlan);
+    DoubleBooking(24, 7, SocialPlan, SchoolPlan, TempWeekPlan);
 
     printf("TempWeekPlan: \n");
     printDemoSchedule(24, 7, TempWeekPlan);
@@ -201,6 +151,7 @@ void printDemoSchedule(int tasks, int days, event display[tasks][days]){
 }
 
 void accept(int tasks, int days, event temp[tasks][days], event planned[tasks][days]) {
+    
     int booking = 0;
     printf("Do you accept the calender? Type 1 for yes and 2 for no: \n");
     scanf("%d", &booking);
@@ -362,6 +313,42 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                         TempWeekPlan[i][j].value = 1;
                     }
                 }
+            }
+        }
+    }
+} 
+
+void DoubleBooking(int tasks, int days, event firstPlan[tasks][days], event secondPlan[tasks][days], event tempPlan[tasks][days]) {
+
+    //De tre arrays af structs l�gges sammen over i TempWeekPlan og der tjekkes for dobbeltbooking:
+    int booking; //TYPE!!
+    int day, j, i;
+
+    for (j = 0; j < 7; j++) {
+        for (i = 0; i < 24; i++) {
+            if ((firstPlan[i][j].value == 1) && (secondPlan[i][j].value == 1)) {
+                day = j + 1;
+                printf("Warning! You are currently overbooked on %s at %s.\n", weekdays[day], timeOfDay[i]);
+                printf("Do you want to schedule event 1: %s or event 2: %s? Type 1 or 2: ", firstPlan[i][j].occasion, secondPlan[i][j].occasion);
+                scanf("%d", &booking);
+                if (booking == 1) {
+                    strcpy(tempPlan[i][j].occasion, firstPlan[i][j].occasion); //Alt dette kan erstattes siden man ikke skal gøre noget i dette tilfælde
+                    tempPlan[i][j].value = 1;
+                }
+                if (booking == 2) {
+                    strcpy(tempPlan[i][j].occasion, secondPlan[i][j].occasion);
+                    tempPlan[i][j].value = 1;
+                }
+                //else
+            }
+            //Vi lægger resten direkte over i TempWeekPlan[][]
+            else if (firstPlan[i][j].value == 1) { // else if ((firstPlan[][].value == 1) && (tempPlan[][].value == 0)
+                strcpy(tempPlan[i][j].occasion, firstPlan[i][j].occasion);
+                tempPlan[i][j].value = firstPlan[i][j].value;
+            }
+            else if (secondPlan[i][j].value == 1) {
+                strcpy(tempPlan[i][j].occasion, secondPlan[i][j].occasion);
+                tempPlan[i][j].value = secondPlan[i][j].value;
             }
         }
     }
