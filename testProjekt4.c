@@ -14,6 +14,12 @@ struct event {
 event_default = { "", 0 }; //Forloop l�ngere nede. Elevtid laves ikke til default idet det er un�dvendigt
 typedef struct event event;
 
+//test
+const char* weekdays[] = { "Day:", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+const char* timeOfDay[] = { "00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00",
+                            "08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00",
+                            "16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00" };
+
 void printDemoSchedule(int tasks, int days, event display[tasks][days]);
 void accept(int tasks, int days, event temp[tasks][days], event planned[tasks][days]); 
 
@@ -106,14 +112,16 @@ int main(void) {
 
     //De tre arrays af structs l�gges sammen over i TempWeekPlan og der tjekkes for dobbeltbooking:
     int booking; //TYPE!!
+    int day; 
     for (j = 0; j < 7; j++) {
         for (i = 0; i < 24; i++) {
             if ((ConstPlan[i][j].value == 1) && (SchoolPlan[i][j].value == 1)) {
-                printf("Warning! You are currently overbooked. Do you want to schedule event 1: %s or event 2: %s? Type 1 or 2: ",
-                       ConstPlan[i][j].occasion, SchoolPlan[i][j].occasion); //tidspunkt og dag i ugen
+                day = j + 1;
+                printf("Warning! You are currently overbooked on %s at %s.\n", weekdays[day], timeOfDay[i]);
+                printf("Do you want to schedule event 1: %s or event 2: %s? Type 1 or 2: ", ConstPlan[i][j].occasion, SchoolPlan[i][j].occasion);
                 scanf("%d", &booking); 
                 if (booking == 1) {
-                    strcpy(TempWeekPlan[i][j].occasion, ConstPlan[i][j].occasion); 
+                    strcpy(TempWeekPlan[i][j].occasion, ConstPlan[i][j].occasion); //Alt dette kan erstattes siden man ikke skal gøre noget i dette tilfælde
                     TempWeekPlan[i][j].value = 1;
                 }
                 if (booking == 2) {
@@ -123,8 +131,9 @@ int main(void) {
                 //else
             }
             if ((ConstPlan[i][j].value == 1) && (SocialPlan[i][j].value == 1)) {
-                printf("Warning! You are currently overbooked. Do you want to schedule event 1: %s or event 2: %s? Type 1 or 2: ",
-                    ConstPlan[i][j].occasion, SocialPlan[i][j].occasion); //tidspunkt og dag i ugen
+                day = j + 1;
+                printf("Warning! You are currently overbooked on %s at %s.\n", weekdays[day], timeOfDay[i]);
+                printf("Do you want to schedule event 1: %s or event 2: %s? Type 1 or 2: ", ConstPlan[i][j].occasion, SocialPlan[i][j].occasion);
                 scanf("%d", &booking);
                 if (booking == 1) {
                     strcpy(TempWeekPlan[i][j].occasion, ConstPlan[i][j].occasion);
@@ -137,8 +146,9 @@ int main(void) {
                 //else
             }
             if ((SocialPlan[i][j].value == 1) && (SchoolPlan[i][j].value == 1)) {
-                printf("Warning! You are currently overbooked. Do you want to schedule event 1: %s or event 2: %s? Type 1 or 2: ",
-                    SocialPlan[i][j].occasion, SchoolPlan[i][j].occasion); //tidspunkt og dag i ugen
+                day = j + 1; 
+                printf("Warning! You are currently overbooked on %s at %s.\n", weekdays[day], timeOfDay[i]);
+                printf("Do you want to schedule event 1: %s or event 2: %s? Type 1 or 2: ", SocialPlan[i][j].occasion, SchoolPlan[i][j].occasion); //tidspunkt og dag i ugen
                 scanf("%d", &booking);
                 if (booking == 1) {
                     strcpy(TempWeekPlan[i][j].occasion, SocialPlan[i][j].occasion);
@@ -179,13 +189,21 @@ int main(void) {
 
 void printDemoSchedule(int tasks, int days, event display[tasks][days]){
     int i, j;
-    for (i = 0; i < 24; i++) {
+
+    for (i = 0; i < 8; i++) {
+        printf("%-11s", weekdays[i]);
+    }
+    printf("\n");
+
+    for (i = 0; i < 24; i++) { 
+        printf("%-11s", timeOfDay[i]);
         for (j = 0; j < 7; j++) {
             printf("%-11s", display[i][j].occasion);
         }
         printf("\n");
     }
     printf("\n"); 
+    
 }
 
 void accept(int tasks, int days, event temp[tasks][days], event planned[tasks][days]) {
@@ -201,6 +219,6 @@ void accept(int tasks, int days, event temp[tasks][days], event planned[tasks][d
         }
     }
     else {
-        printf("Idiot\n"); //Mere professionelt tak!
+        printf("Idiot\n"); //Mere professionelt tak! Her bliver man 
     }
 }
