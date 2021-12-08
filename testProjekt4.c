@@ -225,26 +225,22 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                 for(j = 0; j < 7; j++){
                     strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                     TempWeekPlan[i][j].value = 1;
-                    printf(" %s", TempWeekPlan[i][j].occasion);
-                } printf("\n");
+                }
             }
             for(i = 0; i < wake_up; i++){
                 for(j = 0; j < 7; j++){
                     strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                     TempWeekPlan[i][j].value = 1;
-                    printf(" %s", TempWeekPlan[i][j].occasion);
-                } printf("\n");
+                }
             }
         } else if(go_to_sleep < 15){ //Hvis de går i seng efter midnat
             for(i = go_to_sleep; i < wake_up; i++){
                 for(j = 0; j < 7; j++){
                     strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                     TempWeekPlan[i][j].value = 1;
-                    printf(" %s", TempWeekPlan[i][j].occasion);
-                } printf("\n");
+                }
             }
         }
-        printf("Thank you\n");
     } else if(sleep == 2){ //Til hvis de har to forskellige (eller bare en søvnskema til hverdagene)
         printf("Do you wish a sleeping schedule for your school days and weekend (1) or just the school days(2)?\n");
         scanf(" %d", &sleep);
@@ -260,40 +256,34 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                     for(j = 0; j < 5; j++){
                         strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                         TempWeekPlan[i][j].value = 1;
-                        printf(" %s", TempWeekPlan[i][j].occasion);
-                    } printf("\n");
+                    }
                 }
                 for(i = 0; i < wake_up; i++){
                     for(j = 0; j < 5; j++){
                         strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                         TempWeekPlan[i][j].value = 1;
-                        printf(" %s", TempWeekPlan[i][j].occasion);
-                    } printf("\n");
+                    }
                 }
                 for(i = go_to_sleep; i < 24; i++){ //For Søndagen
                     strcpy(TempWeekPlan[i][6].occasion, "Sleep"); 
                     TempWeekPlan[i][6].value = 1;
-                    printf(" %s", TempWeekPlan[i][6].occasion);
-                } printf("\n");
+                }
                 for(i = 0; i < wake_up; i++){
                         strcpy(TempWeekPlan[i][6].occasion, "Sleep"); 
                         TempWeekPlan[i][6].value = 1;
-                        printf(" %s", TempWeekPlan[i][6].occasion);
-                } printf("\n");
+                }
 
             } else if(go_to_sleep < 15){
                 for(i = go_to_sleep; i < wake_up; i++){
                     for(j = 0; j < 5; j++){
                         strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                         TempWeekPlan[i][j].value = 1;
-                        printf(" %s", TempWeekPlan[i][j].occasion);
-                    } printf("\n");
+                    }
                 }
                 for(i = go_to_sleep; i < wake_up; i++){
                     strcpy(TempWeekPlan[i][6].occasion, "Sleep"); 
                     TempWeekPlan[i][6].value = 1;
-                    printf(" %s", TempWeekPlan[i][6].occasion);
-                } printf("\n");
+                }
             }
             printf("Please type the time you wish to go to sleep for weekends (which hour under 24?):\n");
             scanf(" %d", &go_to_sleep); //Weekenden
@@ -305,27 +295,23 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                     for(j = 4; j < 6; j++){
                         strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                         TempWeekPlan[i][j].value = 1;
-                        printf(" %s", TempWeekPlan[i][j].occasion);
-                    } printf("\n");
+                    }
                 }
                 for(i = 0; i < wake_up; i++){
                     for(j = 5; j < 7; j++){
                         strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                         TempWeekPlan[i][j].value = 1;
-                        printf(" %s", TempWeekPlan[i][j].occasion);
-                    } printf("\n");
+                    }
                 }
             } else if(go_to_sleep < 15){
                 for(i = go_to_sleep; i < wake_up; i++){
                     for(j = 5; j < 7; j++){
                         strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                         TempWeekPlan[i][j].value = 1;
-                        printf(" %s", TempWeekPlan[i][j].occasion);
-                    } printf("\n");
+                    }
                 }
             }
 
-            printf("1");
         } else if(sleep == 2){ //Til hvis det kun er hverdagene
 
             printf("Please type the time you wish to go to sleep (which hour under 24?):\n");
@@ -338,33 +324,27 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                     for(j = 0; j < 4; j++){
                         strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                         TempWeekPlan[i][j].value = 1;
-                        printf(" %s", TempWeekPlan[i][j].occasion);
-                    } printf("\n");
+                    }
                 }
                 for(i = 0; i < wake_up; i++){
                     for(j = 0; j < 5; j++){
                         strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                         TempWeekPlan[i][j].value = 1;
-                        printf(" %s", TempWeekPlan[i][j].occasion);
-                    } printf("\n");
+                    }
                 }
                 for(i = go_to_sleep; i < 24; i++){ //For Søndagen
                     strcpy(TempWeekPlan[i][6].occasion, "Sleep"); 
                     TempWeekPlan[i][6].value = 1;
-                    printf(" %s", TempWeekPlan[i][6].occasion);
-                } printf("\n");
+                }
 
             } else if(go_to_sleep < 15){
                 for(i = go_to_sleep; i < wake_up; i++){
                     for(j = 0; j < 5; j++){
                         strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                         TempWeekPlan[i][j].value = 1;
-                        printf(" %s", TempWeekPlan[i][j].occasion);
-                    } printf("\n");
+                    }
                 }
             }
-            printf("2");
         }
-        printf("Thank you\n");
     }
 }
