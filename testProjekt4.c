@@ -22,6 +22,7 @@ const char* timeOfDay[] = { "00:00","01:00","02:00","03:00","04:00","05:00","06:
 
 void printDemoSchedule(int tasks, int days, event display[tasks][days]);
 void accept(int tasks, int days, event temp[tasks][days], event planned[tasks][days]); 
+void sleep(int tasks, int days, event TempWeekPlan[tasks][days]);
 
 
 int main(void) {
@@ -54,14 +55,7 @@ int main(void) {
     }
 
     //Schedules sleep for all days of the week
-    for (j = 0; j < 7; j++) {
-        for (i = 0; i < 7; i++) {
-            ConstPlan[i][j].value = 1;
-            strcpy(ConstPlan[i][j].occasion, "Sleep");
-        }
-        ConstPlan[23][j].value = 1;
-        strcpy(ConstPlan[23][j].occasion, "Sleep");
-    }
+    sleep(24, 7, TempWeekPlan);
     for (j = 0; j < 7; j++) {
         ConstPlan[7][j].value = 1;
         strcpy(ConstPlan[7][j].occasion, "Breakfast");
@@ -220,5 +214,155 @@ void accept(int tasks, int days, event temp[tasks][days], event planned[tasks][d
     }
     else {
         printf("Idiot\n"); //Mere professionelt tak! Her bliver man 
+    }
+}
+
+void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
+    int i, j, hours = 24;
+    int sleep, go_to_sleep, wake_up;
+
+    //event SleepPlan[hours][days];
+
+    printf("Please the number representing your desired sleeping schedule:\n");
+    printf("1. Same sleeping schedule througout the week\n");
+    printf("2. One schedule for school days and one for the weekend\n");
+    scanf(" %d", &sleep);
+    
+    while(sleep != 1 && sleep != 2){
+        printf("Your answer isn't recognized, try again:");
+        scanf(" %d", &sleep);
+    }
+    if(sleep == 1){ //Ens søvnskema HELE ugen
+        printf("Please type the time you wish to go to sleep (which hour under 24?):\n");
+        scanf(" %d", &go_to_sleep);
+        printf("Please type the time you wish to wake up (which hour under 24?):\n");
+        scanf(" %d", &wake_up);
+
+        if(go_to_sleep > 15){ //Til hvis de går i seng inden midnat, tallet er tilfældigt
+            for(i = go_to_sleep; i < 24; i++){
+                for(j = 0; j < 7; j++){
+                    strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
+                    TempWeekPlan[i][j].value = 1;
+                }
+            }
+            for(i = 0; i < wake_up; i++){
+                for(j = 0; j < 7; j++){
+                    strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
+                    TempWeekPlan[i][j].value = 1;
+                }
+            }
+        } else if(go_to_sleep < 15){ //Hvis de går i seng efter midnat
+            for(i = go_to_sleep; i < wake_up; i++){
+                for(j = 0; j < 7; j++){
+                    strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
+                    TempWeekPlan[i][j].value = 1;
+                }
+            }
+        }
+    } else if(sleep == 2){ //Til hvis de har to forskellige (eller bare en søvnskema til hverdagene)
+        printf("Do you wish a sleeping schedule for your school days and weekend (1) or just the school days(2)?\n");
+        scanf(" %d", &sleep);
+        if(sleep == 1){ //Til to forskellige søvnskemaer, 1 til hverdagene og 1 til weekenden
+
+            printf("Please type the time you wish to go to sleep for school days (which hour under 24?):\n"); //Hverdagene
+            scanf(" %d", &go_to_sleep);
+            printf("Please type the time you wish to wake up on school days (which hour under 24?):\n");
+            scanf(" %d", &wake_up);
+        
+            if(go_to_sleep > 15){ //Til hvis de går i seng inden midnat, tallet er tilfældigt
+                for(i = go_to_sleep; i < 24; i++){
+                    for(j = 0; j < 5; j++){
+                        strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
+                        TempWeekPlan[i][j].value = 1;
+                    }
+                }
+                for(i = 0; i < wake_up; i++){
+                    for(j = 0; j < 5; j++){
+                        strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
+                        TempWeekPlan[i][j].value = 1;
+                    }
+                }
+                for(i = go_to_sleep; i < 24; i++){ //For Søndagen
+                    strcpy(TempWeekPlan[i][6].occasion, "Sleep"); 
+                    TempWeekPlan[i][6].value = 1;
+                }
+                for(i = 0; i < wake_up; i++){
+                        strcpy(TempWeekPlan[i][6].occasion, "Sleep"); 
+                        TempWeekPlan[i][6].value = 1;
+                }
+
+            } else if(go_to_sleep < 15){
+                for(i = go_to_sleep; i < wake_up; i++){
+                    for(j = 0; j < 5; j++){
+                        strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
+                        TempWeekPlan[i][j].value = 1;
+                    }
+                }
+                for(i = go_to_sleep; i < wake_up; i++){
+                    strcpy(TempWeekPlan[i][6].occasion, "Sleep"); 
+                    TempWeekPlan[i][6].value = 1;
+                }
+            }
+            printf("Please type the time you wish to go to sleep for weekends (which hour under 24?):\n");
+            scanf(" %d", &go_to_sleep); //Weekenden
+            printf("Please type the time you wish to wake up on weekends (which hour under 24?):\n");
+            scanf(" %d", &wake_up);
+
+            if(go_to_sleep > 15){ //Til hvis de går i seng inden midnat, tallet er tilfældigt
+                for(i = go_to_sleep; i < 24; i++){
+                    for(j = 4; j < 6; j++){
+                        strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
+                        TempWeekPlan[i][j].value = 1;
+                    }
+                }
+                for(i = 0; i < wake_up; i++){
+                    for(j = 5; j < 7; j++){
+                        strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
+                        TempWeekPlan[i][j].value = 1;
+                    }
+                }
+            } else if(go_to_sleep < 15){
+                for(i = go_to_sleep; i < wake_up; i++){
+                    for(j = 5; j < 7; j++){
+                        strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
+                        TempWeekPlan[i][j].value = 1;
+                    }
+                }
+            }
+
+        } else if(sleep == 2){ //Til hvis det kun er hverdagene
+
+            printf("Please type the time you wish to go to sleep (which hour under 24?):\n");
+            scanf(" %d", &go_to_sleep);
+            printf("Please type the time you wish to wake up (which hour under 24?):\n");
+            scanf(" %d", &wake_up);
+        
+            if(go_to_sleep > 15){ //Til hvis de går i seng inden midnat, tallet er tilfældigt
+                for(i = go_to_sleep; i < 24; i++){
+                    for(j = 0; j < 4; j++){
+                        strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
+                        TempWeekPlan[i][j].value = 1;
+                    }
+                }
+                for(i = 0; i < wake_up; i++){
+                    for(j = 0; j < 5; j++){
+                        strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
+                        TempWeekPlan[i][j].value = 1;
+                    }
+                }
+                for(i = go_to_sleep; i < 24; i++){ //For Søndagen
+                    strcpy(TempWeekPlan[i][6].occasion, "Sleep"); 
+                    TempWeekPlan[i][6].value = 1;
+                }
+
+            } else if(go_to_sleep < 15){
+                for(i = go_to_sleep; i < wake_up; i++){
+                    for(j = 0; j < 5; j++){
+                        strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
+                        TempWeekPlan[i][j].value = 1;
+                    }
+                }
+            }
+        }
     }
 }
