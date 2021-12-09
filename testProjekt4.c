@@ -6,12 +6,12 @@
   #define DAYS 7*/
 
 struct event {
-    char occasion[10]; //er 10-tallet antallet af characters der er plads til i char-strengen
+    char occasion[10]; //10-tallet antallet af characters der er plads til i char-strengen
     unsigned int value; //vigigt at alle starter med 0
     //int priority; //mangler prioritering + evt andet?
     int elevtid;
 }
-event_default = { "", 0 }; //Forloop l�ngere nede. Elevtid laves ikke til default idet det er un�dvendigt
+event_default = { "", 0 }; //Forloop l�ngere nede.
 typedef struct event event;
 
 //test
@@ -32,8 +32,7 @@ int main(void) {
    
     /*Jeg t�nker at vi er n�dt til at lave kalenderen dag for dag og s� hver event er koblet til en ugedag og
     ikke bare til en plads i et to-dimensionelt array, but I don't know */
-    /*Vi pr�ver:
-    F�rst med et to-dimensionelt array*/
+    /*Vi pr�ver: F�rst med et to-dimensionelt array*/
     event SchoolPlan[tasks][days]; /* = malloc(tasks * sizeof *week);*/
     event ConstPlan[tasks][days];
     event SocialPlan[tasks][days];
@@ -58,7 +57,6 @@ int main(void) {
     //Schedules sleep for all days of the week
     sleep(24, 7, TempWeekPlan);
 
-
     //for (j = 0; j < 7; j++) {
         //ConstPlan[7][j].value = 1;
         //strcpy(ConstPlan[7][j].occasion, "Breakfast");
@@ -75,7 +73,9 @@ int main(void) {
         strcpy(ConstPlan[i][5].occasion, "Work");
     }
 
+    //Alle nuværende events ligges sammen i ConstPlan og der tjekkes for dobbeltbooking: 
     DoubleBooking(24, 7, ConstPlan, TempWeekPlan, ConstPlan);
+
     //Herefter slettes alle events fra TempWeekPlan: 
     for (j = 0; j < 7; j++) {
         for (i = 0; i < 24; i++) {
@@ -116,22 +116,29 @@ int main(void) {
         strcpy(SocialPlan[i][6].occasion, "Soccer");
     }
 
-    //double-booking: 
+    //Der tjekkes for double-booking: 
     DoubleBooking(24, 7, ConstPlan, SchoolPlan, TempWeekPlan);
     DoubleBooking(24, 7, ConstPlan, SocialPlan, TempWeekPlan);
     DoubleBooking(24, 7, SocialPlan, SchoolPlan, TempWeekPlan);
 
     Prep_Lesson(24, 7, TempWeekPlan);
+    //TempWeekPlan vises
 
     printf("TempWeekPlan: \n");
     printDemoSchedule(24, 7, TempWeekPlan);
 
+    //TempWeekPlan bliver accepteret eller afvist, hvis accepteret bliver TempWeekPlan overført til PlannedWeek 
     accept(24, 7, TempWeekPlan, PlannedWeek);
 
+    //PlannedWeek vises
     printf("PlannedWeek: \n");
     printDemoSchedule(24, 7, PlannedWeek); 
 
-    return 0; //fordi det er main, det skal ud i vores program, der er main i dette program en void-funktion (?)
+    //Hernæst kommer lesson preparation og deadlines funktionerne (I hvilken rækkefølge?)
+
+    //Imellem forskellige trik her bliver printDemoSchedule() og accept() kaldt flere gange
+
+    return 0;
 }
 
 void printDemoSchedule(int tasks, int days, event display[tasks][days]){
@@ -168,6 +175,7 @@ void accept(int tasks, int days, event temp[tasks][days], event planned[tasks][d
     }
     else {
         printf("Idiot\n"); //Mere professionelt tak! Her bliver man 
+        //sendes videre til ReassignEvent(); 
     }
 }
 
@@ -440,8 +448,6 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
 } 
 
 void DoubleBooking(int tasks, int days, event firstPlan[tasks][days], event secondPlan[tasks][days], event tempPlan[tasks][days]) {
-
-    //De tre arrays af structs l�gges sammen over i TempWeekPlan og der tjekkes for dobbeltbooking:
     int booking; //TYPE!!
     int day, j, i;
 
@@ -462,7 +468,7 @@ void DoubleBooking(int tasks, int days, event firstPlan[tasks][days], event seco
                 }
                 //else
             }
-            //Vi lægger resten direkte over i TempWeekPlan[][]
+            //Resten overføres direkte til tempPlan[][]
             else if (firstPlan[i][j].value == 1) { // else if ((firstPlan[][].value == 1) && (tempPlan[][].value == 0)
                 strcpy(tempPlan[i][j].occasion, firstPlan[i][j].occasion);
                 tempPlan[i][j].value = firstPlan[i][j].value;
