@@ -24,6 +24,7 @@ void printDemoSchedule(int tasks, int days, event display[tasks][days]);
 void accept(int tasks, int days, event temp[tasks][days], event planned[tasks][days]); 
 void sleep(int tasks, int days, event TempWeekPlan[tasks][days]);
 void DoubleBooking(int tasks, int days, event firstPlan[tasks][days], event secondPlan[tasks][days], event tempPlan[tasks][days]);
+void Prep_Lesson(int tasks, int days, event TempWeekPlan[tasks][days]);
 
 int main(void) {
     int i, j;
@@ -120,6 +121,8 @@ int main(void) {
     DoubleBooking(24, 7, ConstPlan, SocialPlan, TempWeekPlan);
     DoubleBooking(24, 7, SocialPlan, SchoolPlan, TempWeekPlan);
 
+    Prep_Lesson(24, 7, TempWeekPlan);
+
     printf("TempWeekPlan: \n");
     printDemoSchedule(24, 7, TempWeekPlan);
 
@@ -205,7 +208,7 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                     strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                     TempWeekPlan[i][j].value = 1;
                     TempWeekPlan[go_to_sleep - 1][j].value = 1;
-                    strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
+                    //strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
                 }
             }
             for(i = 0; i <= wake_up; i++){
@@ -231,14 +234,14 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                     if(go_to_sleep == 0){
                         if(j == 0){
                             TempWeekPlan[23][6].value = 1;
-                            strcpy(TempWeekPlan[23][6].occasion, "Stupid");
+                            //strcpy(TempWeekPlan[23][6].occasion, "Stupid");
                         } else {
                         TempWeekPlan[23][j - 1].value = 1;
-                        strcpy(TempWeekPlan[23][j - 1].occasion, "Stupid");
+                        //strcpy(TempWeekPlan[23][j - 1].occasion, "Stupid");
                         }
                     } else{
                         TempWeekPlan[go_to_sleep - 1][j].value = 1;
-                        strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
+                        //strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
                     }
                 }
             }
@@ -468,6 +471,38 @@ void DoubleBooking(int tasks, int days, event firstPlan[tasks][days], event seco
                 strcpy(tempPlan[i][j].occasion, secondPlan[i][j].occasion);
                 tempPlan[i][j].value = secondPlan[i][j].value;
             }
+        }
+    }
+}
+
+void Prep_Lesson(int tasks, int days, event TempWeekPlan[tasks][days]){
+    int j, i, prep_time, preparation, count = 0;
+
+    printf("How many hours a day, do you wish to spend preparing for lessons?\n");
+    scanf(" %d", &prep_time);
+    
+    while(prep_time >= 4){
+        printf("Are you sure you want to spend %d hours preparing for lessons?\n", prep_time);
+        printf("Please consider a lower amount of hours a days:\n");
+        scanf(" %d", &prep_time);
+    }
+
+    for(j = 0; j < 4; j++){
+        count = 0;
+        for(i = 0; i < 24; i++){
+            if(TempWeekPlan[i][j].value == 0 && count != prep_time){
+                strcpy(TempWeekPlan[i][j].occasion, "LP");
+                TempWeekPlan[i][j].value = 1;
+                count++;
+            }
+        }
+    }
+    count = 0;
+    for(i = 0; i < 24; i++){
+        if(TempWeekPlan[i][6].value == 0 && count != prep_time){
+            strcpy(TempWeekPlan[i][6].occasion, "LP");
+            TempWeekPlan[i][6].value = 1;
+            count++;
         }
     }
 }
