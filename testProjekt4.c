@@ -204,6 +204,8 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                 for(j = 0; j < 7; j++){
                     strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                     TempWeekPlan[i][j].value = 1;
+                    TempWeekPlan[go_to_sleep - 1][j].value = 1;
+                    strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
                 }
             }
             for(i = 0; i <= wake_up; i++){
@@ -226,6 +228,18 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                     TempWeekPlan[i][j].value = 1;
                     strcpy(TempWeekPlan[wake_up][j].occasion, "Breakfast");
                     TempWeekPlan[wake_up][j].value = 1;
+                    if(go_to_sleep == 0){
+                        if(j == 0){
+                            TempWeekPlan[23][6].value = 1;
+                            strcpy(TempWeekPlan[23][6].occasion, "Stupid");
+                        } else {
+                        TempWeekPlan[23][j - 1].value = 1;
+                        strcpy(TempWeekPlan[23][j - 1].occasion, "Stupid");
+                        }
+                    } else{
+                        TempWeekPlan[go_to_sleep - 1][j].value = 1;
+                        strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
+                    }
                 }
             }
         }
@@ -254,6 +268,8 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                     for(j = 0; j < 4; j++){
                         strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                         TempWeekPlan[i][j].value = 1;
+                        TempWeekPlan[go_to_sleep - 1][j].value = 1;
+                        //strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
                     }
                 }
                 for(i = 0; i <= wake_up; i++){
@@ -267,6 +283,8 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                 for(i = go_to_sleep; i < 24; i++){ //For Søndagen
                     strcpy(TempWeekPlan[i][6].occasion, "Sleep"); 
                     TempWeekPlan[i][6].value = 1;
+                    TempWeekPlan[go_to_sleep - 1][6].value = 1;
+                    //strcpy(TempWeekPlan[go_to_sleep - 1][6].occasion, "Stupid");
                 }
 
             } else if(go_to_sleep < 15){
@@ -281,6 +299,18 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                         TempWeekPlan[i][j].value = 1;
                         strcpy(TempWeekPlan[wake_up][j].occasion, "Breakfast");
                         TempWeekPlan[wake_up][j].value = 1;
+                        if(go_to_sleep == 0){
+                            if(j == 0){
+                                TempWeekPlan[23][6].value = 1;
+                                //strcpy(TempWeekPlan[23][6].occasion, "Stupid");
+                            } else {
+                                TempWeekPlan[23][j - 1].value = 1;
+                                //strcpy(TempWeekPlan[23][j - 1].occasion, "Stupid");
+                            } 
+                        } else {
+                            TempWeekPlan[go_to_sleep - 1][j].value = 1;
+                            //strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
+                        }
                     }
                 }
             }
@@ -299,6 +329,8 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                     for(j = 4; j < 6; j++){
                         strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                         TempWeekPlan[i][j].value = 1;
+                        TempWeekPlan[go_to_sleep - 1][j].value = 1;
+                        //strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
                     }
                 }
                 for(i = 0; i <= wake_up; i++){
@@ -321,6 +353,18 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                         TempWeekPlan[i][j].value = 1;
                         strcpy(TempWeekPlan[wake_up][j].occasion, "Breakfast");
                         TempWeekPlan[wake_up][j].value = 1;
+                        if(go_to_sleep == 0){
+                            if(j == 0){
+                                TempWeekPlan[23][6].value = 1;
+                                //strcpy(TempWeekPlan[23][6].occasion, "Stupid");
+                            } else {
+                                TempWeekPlan[23][j - 1].value = 1;
+                                //strcpy(TempWeekPlan[23][j - 1].occasion, "Stupid");
+                            } 
+                        } else {
+                            TempWeekPlan[go_to_sleep - 1][j].value = 1;
+                            //strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
+                        }
                     }
                 }
             }
@@ -342,6 +386,8 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                     for(j = 0; j < 4; j++){
                         strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                         TempWeekPlan[i][j].value = 1;
+                        TempWeekPlan[go_to_sleep-1][j].value = 1;
+                        //strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
                     }
                 }
                 for(i = 0; i <= wake_up; i++){
@@ -355,6 +401,8 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                 for(i = go_to_sleep; i < 24; i++){ //For Søndagen
                     strcpy(TempWeekPlan[i][6].occasion, "Sleep"); 
                     TempWeekPlan[i][6].value = 1;
+                    TempWeekPlan[go_to_sleep - 1][6].value = 1;
+                    //strcpy(TempWeekPlan[go_to_sleep - 1][6].occasion, "Stupid");
                 }
 
             } else if(go_to_sleep < 15){
@@ -369,6 +417,18 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                         TempWeekPlan[i][j].value = 1;
                         strcpy(TempWeekPlan[wake_up][j].occasion, "Breakfast");
                         TempWeekPlan[wake_up][j].value = 1;
+                        if(go_to_sleep == 0){
+                            if(j == 0){
+                                TempWeekPlan[23][6].value = 1;
+                                //strcpy(TempWeekPlan[23][6].occasion, "Stupid");
+                            } else {
+                                TempWeekPlan[23][j - 1].value = 1;
+                                //strcpy(TempWeekPlan[23][j - 1].occasion, "Stupid");
+                            } 
+                        }else {
+                            TempWeekPlan[go_to_sleep - 1][j].value = 1;
+                            //strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
+                        }
                     }
                 }
             }
