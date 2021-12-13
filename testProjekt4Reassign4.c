@@ -145,7 +145,7 @@ int main(void) {
     //Hernæst kommer lesson preparation og deadlines funktionerne (I hvilken rækkefølge?)
 
     //Her bliver printDemoSchedule() og accept() kaldt flere gange
-    printf("Program end\n")
+    printf("Program end\n"); 
     
     return 0;
 }
