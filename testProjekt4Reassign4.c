@@ -129,10 +129,11 @@ int main(void) {
     printf("TempWeekPlan: \n");
     printDemoSchedule(24, 7, TempWeekPlan);
 
+    printf("Now you will have the opportunity to reassign events: \n"); 
     ReassignEvent(24, 7, TempWeekPlan, TempWeekPlan); 
    
-    printf("TempWeekPlan(fra main, efter ReassignEvent): \n");
-    printDemoSchedule(24, 7, TempWeekPlan);
+    //printf("TempWeekPlan(fra main, efter ReassignEvent): \n");
+    //printDemoSchedule(24, 7, TempWeekPlan);
 
     //TempWeekPlan bliver accepteret eller afvist, hvis accepteret bliver TempWeekPlan overført til PlannedWeek 
     accept(24, 7, TempWeekPlan, PlannedWeek);
@@ -144,7 +145,7 @@ int main(void) {
     //Hernæst kommer lesson preparation og deadlines funktionerne (I hvilken rækkefølge?)
 
     //Her bliver printDemoSchedule() og accept() kaldt flere gange
-    
+    printf("Program end\n")
     
     return 0;
 }
@@ -535,7 +536,7 @@ void Prep_Lesson(int tasks, int days, event TempWeekPlan[tasks][days]) {
 }
 
 //modtager i og j fra DoubleBooking() + variabel der fortæller om vi er kommet fra doubleBooking() eller ej + et array fra double-booking()
-void ReassignD(int tasks, int days, event tempPlan[tasks][days], event reassignedarray[tasks][days], int i, int j, int fraDoubleBooking, event doublebookingarray[tasks][days]) {
+void ReassignD(int tasks, int days, event tempPlan[tasks][days], event reassignedarray[tasks][days], int i, int j, event doublebookingarray[tasks][days]) {
     //Vi printer først TempWeekPlan[][] for at brugeren kan se kalenderen som den ser ud nu og har et overblik over den
     printDemoSchedule(24, 7, tempPlan);   
     int endday, endhour;  
@@ -598,15 +599,15 @@ void ReassignD(int tasks, int days, event tempPlan[tasks][days], event reassigne
         }
     } 
     //Her til slut printes det rearrangerede array og man bliver sendt tilbage til videre til doubleBooking()
-    printf("TempWeekPlan som den der ud i slutningen af ReassignD(); \n"); 
-    printDemoSchedule(24, 7, tempPlan); 
+    //printf("TempWeekPlan som den der ud i slutningen af ReassignD(); \n"); 
+    //printDemoSchedule(24, 7, tempPlan); 
 }   
 
 void ReassignEvent(int tasks, int days, event tempPlan[tasks][days], event reassignedarray[tasks][days]) {
     //Funktionen kaldes fra et andet sted end doublebooking: 
     
     //Vi printer først TempWeekPlan[][] for at brugeren kan se kalenderen som den ser ud nu og har et overblik over den
-    printf("Start of ReassignD, print of TempPlanWeek: "); 
+    printf("Start of ReassignEvent, print of TempPlanWeek: \n"); 
     printDemoSchedule(24, 7, tempPlan);
 
     int endday, endhour, startday, starthour, i, j;
@@ -617,96 +618,116 @@ void ReassignEvent(int tasks, int days, event tempPlan[tasks][days], event reass
     //er det et problem at køre et while loop her? 
     //Det er godt idet kan reschedule flere events ad gangen men skal man så ikke samtidig køre et indre while loop eller flere
     //der styrer de ting som while-looppet styrede i ReassignD()?
-    while (run = 0) {
-        printf("Which event do you want to reschedule?\nPlease enter the day of the event you wish to reschedule: For Monday, type 0, for Tuesday type 1 and so on... \n");
-        scanf(" %d", &startday);  //enum type or? 
-        printf("Please enter the hour of the event you wish to reschedule: For the hour 00:00 - 01:00 type 0 and so on\n");
-        scanf(" %d", &starthour);
-        printf("You want to reschedule the event %s, in hour %d of day %d. To confirm, enter 1: ", tempPlan[starthour][startday].occasion, starthour, startday);
-        scanf(" %d", &confirm);
-        if (confirm == 1) {
-            printf("Do you want to delete the event %s or reschedule it? For deletion, type 1, for rescheduling, type 2: \n", tempPlan[starthour][startday].occasion);
+    while (run == 0) {
+        printf("If you do not wish to reschedule any events, type 1: \n"); 
+        scanf(" %d", &choose); 
+        if (choose == 1) {
+            run = 1; 
+        }
+        else {
+            printf("Which event do you want to reschedule?\nPlease enter the day of the event you wish to reschedule: For Monday, type 0, for Tuesday type 1 and so on... \n");
+            scanf(" %d", &startday);  //enum type or? 
+            printf("Please enter the hour of the event you wish to reschedule: For the hour 00:00 - 01:00 type 0 and so on\n");
+            scanf(" %d", &starthour);
+            printf("You want to reschedule the event %s, in hour %d of day %d. To confirm, enter 1: ", tempPlan[starthour][startday].occasion, starthour, startday);
             scanf(" %d", &confirm);
             if (confirm == 1) {
-                strcpy(reassignedarray[starthour][startday].occasion, ""); 
-                reassignedarray[starthour][startday].value = 0;
-                run = 1;
-            }
-            if (confirm == 2) {
-                printf("Please enter the day you wish to reschedule the event %s to: For Monday, type 0, for Tuesday type 1 and so on... \n", tempPlan[starthour][startday].occasion);
-                scanf(" %d", &endday);  //enum type or? 
-                printf("Please enter the hour you wish to reschedule the event %s to: For the hour 00:00 - 01:00 type 0 and so on\n", tempPlan[starthour][startday].occasion);
-                scanf(" %d", &endhour);
-                printf("You have chosen to reschedule the event %s to hour %d of day %d. To confirm, enter 1. \n", tempPlan[starthour][startday].occasion, endhour, endday);
+                printf("Do you want to delete the event %s or reschedule it? For deletion, type 1, for rescheduling, type 2: \n", tempPlan[starthour][startday].occasion);
                 scanf(" %d", &confirm);
-                if (reassignedarray[endhour][endday].value != 0) {
-                    printf("It seems that another event is planned for hour %d of day %d. The event is %s, how do you want to continue?\n", endhour, endday, reassignedarray[endhour][endday].occasion);
-                    printf("If you want to overwrite the planned event %s with the unscheduled event %s and erase the old event, type 1\n", reassignedarray[endhour][endday].occasion, tempPlan[starthour][startday].occasion);
-                    printf("If you want to find another time for the new event %s, and keep the old event %s, type 2\n", tempPlan[starthour][startday].occasion, reassignedarray[endhour][endday].occasion);
-                    printf("If you want to reschedule the old event %s and keep the new event %s in the chosen time-slot, type 3\n", reassignedarray[endhour][endday].occasion, tempPlan[starthour][startday].occasion);
-                    scanf(" %d", &choose);
+                if (confirm == 1) {
+                    strcpy(reassignedarray[starthour][startday].occasion, "");
+                    reassignedarray[starthour][startday].value = 0;
+                    run = 1;
                 }
-                if (choose == 1) {
-                    //Overwrites the old event with the new one
-                    strcpy(reassignedarray[endhour][endday].occasion, tempPlan[starthour][startday].occasion);
-                    reassignedarray[endhour][endday].value = 1;
-                    run = 1; //terminates the loop and the function
-                }
-                if (choose == 2) {
-                    continue; //does this work?? In theory we should just jump back to the while look here and try again, could also be break;?
-                }
-                if (choose == 3) {
-                    //first I need to store the value of reassignedarray[endhour][endday] in another spot (in tempPlan[][])
-                    for (int j = 0; j < 7; j++) {
-                        for (int i = 0; i < 24, i++) {
-                            if ((tempPlan[i][j].occasion == "") && (tempPlan[i][j].value == 0)) {
-                                strcpy(tempPlan[i][j].occasion, reassignedarray[endhour][endday].occasion);
-                                tempPlan[i][j].value = 1;
+                if (confirm == 2) {
+                    printf("Please enter the day you wish to reschedule the event %s to: For Monday, type 0, for Tuesday type 1 and so on... \n", tempPlan[starthour][startday].occasion);
+                    scanf(" %d", &endday);  //enum type or? 
+                    printf("Please enter the hour you wish to reschedule the event %s to: For the hour 00:00 - 01:00 type 0 and so on\n", tempPlan[starthour][startday].occasion);
+                    scanf(" %d", &endhour);
+                    printf("You have chosen to reschedule the event %s to hour %d of day %d. To confirm, enter 1. \n", tempPlan[starthour][startday].occasion, endhour, endday);
+                    scanf(" %d", &confirm);
+                    if (reassignedarray[endhour][endday].value != 0) {
+                        printf("It seems that another event is planned for hour %d of day %d. The event is %s, how do you want to continue?\n", endhour, endday, reassignedarray[endhour][endday].occasion);
+                        printf("If you want to overwrite the planned event %s with the unscheduled event %s and erase the old event, type 1\n", reassignedarray[endhour][endday].occasion, tempPlan[starthour][startday].occasion);
+                        printf("If you want to find another time for the new event %s, and keep the old event %s, type 2\n", tempPlan[starthour][startday].occasion, reassignedarray[endhour][endday].occasion);
+                        printf("If you want to reschedule the old event %s and keep the new event %s in the chosen time-slot, type 3\n", reassignedarray[endhour][endday].occasion, tempPlan[starthour][startday].occasion);
+                        scanf(" %d", &choose);
+                    }
+                    if (choose == 1) {
+                        //Overwrites the old event with the new one
+                        strcpy(reassignedarray[endhour][endday].occasion, tempPlan[starthour][startday].occasion);
+                        reassignedarray[endhour][endday].value = 1;
+                        run = 1; //terminates the loop and the function
+                    }
+                    if (choose == 2) {
+                        printf("You will have to enter %d for the first value of day, %d for the second value of hour to reschedule the event %s\n", startday, starthour, tempPlan[starthour][startday]);
+                        continue; //does this work?? In theory we should just jump back to the while look here and try again, could also be break;?
+                    }
+                    if (choose == 3) {
+                        //first I need to store the value of reassignedarray[endhour][endday] in another spot (in tempPlan[][])
+                        for (j = 0; j < 7; j++) {
+                            for (i = 0; i < 24; i++) {
+                                if ((tempPlan[i][j].occasion == "") && (tempPlan[i][j].value == 0)) {
+                                    strcpy(tempPlan[i][j].occasion, reassignedarray[endhour][endday].occasion);
+                                    tempPlan[i][j].value = 1;
+                                    //Så er værdierne lagt over på en tom plads i tempPlan
+
+                                    //Nu lægges tempPlan[starthour][startday] værdierne over i reassignedarray[endhour][endday]
+                                    strcpy(reassignedarray[endhour][endday].occasion, tempPlan[starthour][startday].occasion);
+                                    reassignedarray[endhour][endday].value = 1;
+
+                                    //Vi displayer at det er blevet gjort: 
+                                    printDemoSchedule(24, 7, reassignedarray);
+                                    printf("You have now planned the event %s for hour %d on day %d.\nNow you will be asked about rescheduling event %s\n", reassignedarray[endhour][endday].occasion, endhour, endday, tempPlan[i][j]);
+                                    printf("You will have to enter %d for the first value of day, %d for the second value of hour to reschedule the event %s\n", startday, starthour, tempPlan[i][j]);
+                                    //Now I have to put the variables back into the start-variables so the whole thing can run again
+                                    strcpy(tempPlan[starthour][startday].occasion, tempPlan[i][j].occasion);
+                                    tempPlan[starthour][startday].value = 1;
+                                    //the space in tempPlan where the original event that has been rescheduled was has been overwritten 
+                                    //with the event from reassignedarray that is to be scheduled now and reassignedarray is unchanged
+                                    //I wipe the space and value occupied by tempPlan[i][j]: 
+                                    strcpy(tempPlan[i][j].occasion, "");
+                                    tempPlan[i][j].value = 0;
+                                    /*strcpy(tempPlan[i][j].occasion, event_default);
+                                    strcpy(tempPlan[i][j].value, event_default);*/
+                                    /*strcpy(reassignedarray[endhour][endday].occasion, tempPlan[endhour][endday].occasion);
+                                    reassignedarray[starthour][startday].value = 1;*/
+                                }
 
                             }
 
                         }
+                        //printf("Reassignment not possible\n"); Her vil man gå i den hvis man bare går igennem loopet så vi skal ikke bruge den
+                        //do something else?
 
                     }
-                    //Så er værdierne lagt over på en tom plads
-                    //Nu lægges tempPlan[starthour][startday] værdierne over i reassignedarray[endhour][endday]
-
-                    strcpy(reassignedarray[endhour][endday].occasion, tempPlan[starthour][startday].occasion);
-                    reassignedarray[endhour][endday].value = 1;
-                    
-                    //fra gammel funktion: 
-                    
-                    //Nu skulle vi gerne fortsætte tilbage i loopet 
-                    printf("You have now planned the event %s for hour %d on day %d.\nNow you will be asked about rescheduling event %s", tempPlan[endhour][endday].occasion, endhour, endday, reassignedarray[endhour][endday]);
-                    strcpy(doublebookingarray[starthour][startday].occasion, reassignedarray[endhour][endday].occasion);
-                    doublebookingarray[starthour][startday].value = 1;
-                    strcpy(reassignedarray[endhour][endday].occasion, tempPlan[endhour][endday].occasion);
-                    reassignedarray[starthour][startday].value = 1;
-                    //slut på gammel funktion
+                    else if (confirm != 1) {
+                        printf("Choice for reassignment not confirmed, try again\n");
+                    }
                 }
                 else if (confirm != 1) {
                     printf("Choice for reassignment not confirmed, try again\n");
                 }
+
+
+                else if (confirm != 1) {
+                    printf("Event for reassignment not confirmed, try again(?)\n");
+                }
             }
-            else if (confirm != 1) {
-                printf("Choice for reassignment not confirmed, try again\n");
-            }
-        }
-        else if (confirm != 1) {
-            printf("Do you want to reschedule other events? For yes, type 1, for no, type 2: ")
-            scanf("%d", choose); 
+            printf("Do you want to reschedule other events? For yes, type 1, for no, type 2: ");
+            scanf(" %d", &choose);
             if (choose == 1) {
                 printf("TempWeekPlan i ReassignEvent(), choose another event to reschedule; \n");
                 printDemoSchedule(24, 7, reassignedarray);
-                continue; 
+                continue;
             }
-            if (choose == 2) {
-                run = 1; 
+            else if (choose == 2) {
+                run = 1;
             }
-            printf("Event for reassignment not confirmed, try again(?)\n");
         }
     }
     //Her til slut printes reassignedarray[][].occasion værdierne og man bliver sendt videre til accept()
-    printf("TempWeekPlan som den der ud i slutningen af ReassignEvent(); \n");
+    printf("So far, your calendar looks like this: \n");
     printDemoSchedule(24, 7, reassignedarray);
+    return; //Går vi bare tilbage i main her eller returnerer vi også værdier, for det skal vi ikke?
 }
