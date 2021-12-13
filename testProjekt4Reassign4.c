@@ -139,8 +139,8 @@ int main(void) {
     accept(24, 7, TempWeekPlan, PlannedWeek);
 
     //PlannedWeek vises
-    printf("PlannedWeek: \n");
-    printDemoSchedule(24, 7, PlannedWeek); 
+    //printf("PlannedWeek: \n");
+    //printDemoSchedule(24, 7, PlannedWeek); 
 
     //Hernæst kommer lesson preparation og deadlines funktionerne (I hvilken rækkefølge?)
 
@@ -183,7 +183,9 @@ void accept(int tasks, int days, event temp[tasks][days], event planned[tasks][d
         }
     }
     else {
-        printf("Idiot\n"); //Mere professionelt tak! Her bliver man 
+        printf("Not accepted\n"); 
+        printf("TempWeekPlan: \n");
+        printDemoSchedule(24, 7, temp);
         //sendes videre til ReassignEvent(); 
     }
 }
