@@ -10,6 +10,7 @@ struct event {
     unsigned int value; //vigigt at alle starter med 0
     //int priority; //mangler prioritering + evt andet?
     int elevtid;
+    int priority;
 }
 event_default = { "", 0 }; //Forloop l�ngere nede.
 typedef struct event event;
@@ -27,6 +28,7 @@ void DoubleBooking(int tasks, int days, event firstPlan[tasks][days], event seco
 void Prep_Lesson(int tasks, int days, event TempWeekPlan[tasks][days]);
 void ReassignD(int tasks, int days, event tempPlan[tasks][days], event reassignedarray[tasks][days], int i, int j, event doublebookingarray[tasks][days]);
 void ReassignEvent(int tasks, int days, event tempPlan[tasks][days], event reassignedarray[tasks][days]); 
+/*void Priority(int tasks, int days, event TempWeekPlan[tasks][days]);*/ //Denne funktion kan først tages i brug, med deadlinefunktionen
 
 int main(void) {
     int i, j;
@@ -189,7 +191,7 @@ void accept(int tasks, int days, event temp[tasks][days], event planned[tasks][d
 }
 
 void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
-    int i, j, hours = 24;
+    int i, j;
     int sleep, go_to_sleep, wake_up;
 
     //event SleepPlan[hours][days];
@@ -504,7 +506,7 @@ void DoubleBooking(int tasks, int days, event firstPlan[tasks][days], event seco
 }
 
 void Prep_Lesson(int tasks, int days, event TempWeekPlan[tasks][days]) {
-    int j, i, prep_time, preparation, count = 0;
+    int j, i, prep_time, count = 0;
 
     printf("How many hours a day, do you wish to spend preparing for lessons?\n");
     scanf(" %d", &prep_time);
@@ -731,3 +733,16 @@ void ReassignEvent(int tasks, int days, event tempPlan[tasks][days], event reass
     printDemoSchedule(24, 7, reassignedarray);
     return; //Går vi bare tilbage i main her eller returnerer vi også værdier, for det skal vi ikke?
 }
+
+/*void Priority(int tasks, int days, event TempWeekPlan[tasks][days]){ 
+Denne funktion kan først tages i brug, med deadlinefunktionen
+Denne funktion skal bare indsættes i deadline funktionen, hvis det kun er den slags assignments
+Dette er en Template, der bare skal sættes ind
+
+    printf("What priority should this assignment have?\n");
+    scanf(" &d", &importance);
+    TempWeekPlan[i][j].priority = importance;
+
+
+}*/
+
