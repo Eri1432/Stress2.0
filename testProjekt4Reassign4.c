@@ -6,13 +6,13 @@
   #define DAYS 7*/
 
 struct event {
-    char occasion[10]; //10-tallet antallet af characters der er plads til i char-strengen
+    char occasion[15]; //10-tallet antallet af characters der er plads til i char-strengen
     unsigned int value; //vigigt at alle starter med 0
     //int priority; //mangler prioritering + evt andet?
     int elevtid;
     int priority;
 }
-event_default = { "", 0 }; //Forloop l�ngere nede.
+event_default = { "", 0, 0, 0}; //Forloop l�ngere nede.
 typedef struct event event;
 
 //test
@@ -28,6 +28,7 @@ void DoubleBooking(int tasks, int days, event firstPlan[tasks][days], event seco
 void Prep_Lesson(int tasks, int days, event TempWeekPlan[tasks][days]);
 void ReassignD(int tasks, int days, event tempPlan[tasks][days], event reassignedarray[tasks][days], int i, int j, event doublebookingarray[tasks][days]);
 void ReassignEvent(int tasks, int days, event tempPlan[tasks][days], event reassignedarray[tasks][days]); 
+void Deadline(int tasks, int days, event TempWeekPlan[tasks][days]);
 /*void Priority(int tasks, int days, event TempWeekPlan[tasks][days]);*/ //Denne funktion kan først tages i brug, med deadlinefunktionen
 
 int main(void) {
@@ -127,6 +128,15 @@ int main(void) {
 
     Prep_Lesson(24, 7, TempWeekPlan);
 
+    strcpy(TempWeekPlan[22][4].occasion, "Deadline Dansk");
+    TempWeekPlan[22][4].value = 1;
+    TempWeekPlan[22][4].elevtid = 5;
+    strcpy(TempWeekPlan[23][4].occasion, "Deadline Mat");
+    TempWeekPlan[23][4].value = 1;
+    TempWeekPlan[23][4].elevtid = 3;
+    
+    Deadline(24, 7, TempWeekPlan);
+
     //TempWeekPlan vises
     printf("TempWeekPlan: \n");
     printDemoSchedule(24, 7, TempWeekPlan);
@@ -137,12 +147,14 @@ int main(void) {
     //printf("TempWeekPlan(fra main, efter ReassignEvent): \n");
     //printDemoSchedule(24, 7, TempWeekPlan);
 
+    
     //TempWeekPlan bliver accepteret eller afvist, hvis accepteret bliver TempWeekPlan overført til PlannedWeek 
     accept(24, 7, TempWeekPlan, PlannedWeek);
 
     //PlannedWeek vises
     //printf("PlannedWeek: \n");
     //printDemoSchedule(24, 7, PlannedWeek); 
+
 
     //Hernæst kommer lesson preparation og deadlines funktionerne (I hvilken rækkefølge?)
 
@@ -156,14 +168,14 @@ void printDemoSchedule(int tasks, int days, event display[tasks][days]){
     int i, j;
 
     for (i = 0; i < 8; i++) {
-        printf("%-11s", weekdays[i]);
+        printf("%-15s", weekdays[i]);
     }
     printf("\n");
 
     for (i = 0; i < 24; i++) { 
-        printf("%-11s", timeOfDay[i]);
+        printf("%-15s", timeOfDay[i]);
         for (j = 0; j < 7; j++) {
-            printf("%-11s", display[i][j].occasion);
+            printf("%-15s", display[i][j].occasion);
         }
         printf("\n");
     }
@@ -736,15 +748,69 @@ void ReassignEvent(int tasks, int days, event tempPlan[tasks][days], event reass
     return; //Går vi bare tilbage i main her eller returnerer vi også værdier, for det skal vi ikke?
 }
 
-/*void Priority(int tasks, int days, event TempWeekPlan[tasks][days]){ 
-Denne funktion kan først tages i brug, med deadlinefunktionen
-Denne funktion skal bare indsættes i deadline funktionen, hvis det kun er den slags assignments
-Dette er en Template, der bare skal sættes ind
+/*TempWeekPlan[22][4].elevtid = 5
+TempWeekPlan[23][4].elevtid = 3
+while(TempWeekPlan[i][j].elevtid > 0){
+    for(i = 0; i < 24; i++){
+        for(j = 0; j < 7; j++){
+            if(TempWeekPlan[i][j].value == 0){
+                strcpy(TempWeekPlan[i][j].occasion, "Assignment")
+                TempWeekPlan[i][j].elevtid--; OBS her skal et fikseret punkt fra skemaet ind.
+                TempWeekPlan[i][j].value = 1;
+            }
+        }
+    }
+}
+*/
 
-    printf("What priority should this assignment have?\n");
-    scanf(" &d", &importance);
-    TempWeekPlan[i][j].priority = importance;
+void Deadline(int tasks, int days, event TempWeekPlan[tasks][days]){ //NOT DONE!!
+    int i, j, k, l;
 
-
-}*/
-
+    for(i = 0; i < 24; i++){
+        for(j = 0; j < 7; j++){
+            /*if(strcmp(TempWeekPlan[i][j].occasion, "Deadline") == 0){*/
+            if(TempWeekPlan[i][j].elevtid > 0){
+                printf("You have a deadline %d:00 on day %d in the week\n", i, (j + 1));
+                printf("How much time do you want to spend on it?\n");
+                scanf(" %d", &TempWeekPlan[i][j].elevtid);
+                printf("How important is this assignment? 1 = Urgent, 2 = Neutral, 3 = Unimportant\n");
+                scanf(" %d", &TempWeekPlan[i][j].priority);               
+            }
+        }
+    }
+    for(i = 0; i < 24; i++){
+        for(j = 0; j < 7; j++){
+            if(TempWeekPlan[i][j].priority == 1){
+                for(l = 0; l < j; l++){
+                    for(k = 0; k < 24; k++){
+                        if(TempWeekPlan[k][l].value == 0 && TempWeekPlan[i][j].elevtid != 0){
+                           strcpy(TempWeekPlan[k][l].occasion, TempWeekPlan[i][j].occasion); //Tekstuelt rettelse nødvendigt
+                           TempWeekPlan[k][l].value = 1;
+                           TempWeekPlan[i][j].elevtid--;
+                        }
+                    }
+                }
+            } else if(TempWeekPlan[i][j].priority == 2){
+                for(l = 0; l < j; l++){
+                    for(k = 0; k < 24; k++){
+                        if(TempWeekPlan[k][l].value == 0 && TempWeekPlan[i][j].elevtid != 0){
+                           strcpy(TempWeekPlan[k][l].occasion, TempWeekPlan[i][j].occasion);
+                           TempWeekPlan[k][l].value = 1;
+                           TempWeekPlan[i][j].elevtid--;
+                        }
+                    }
+                }
+            } else if(TempWeekPlan[i][j].priority == 3){
+                for(l = 0; l < j; l++){
+                    for(k = 0; k < 24; k++){
+                        if(TempWeekPlan[k][l].value == 0 && TempWeekPlan[i][j].elevtid != 0){
+                           strcpy(TempWeekPlan[k][l].occasion, TempWeekPlan[i][j].occasion);
+                           TempWeekPlan[k][l].value = 1;
+                           TempWeekPlan[i][j].elevtid--;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
