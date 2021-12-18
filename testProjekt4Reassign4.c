@@ -128,12 +128,12 @@ int main(void) {
 
     Prep_Lesson(24, 7, TempWeekPlan);
 
-    strcpy(TempWeekPlan[22][4].occasion, "Deadline Dansk");
-    TempWeekPlan[22][4].value = 1;
-    TempWeekPlan[22][4].elevtid = 5;
-    strcpy(TempWeekPlan[23][4].occasion, "Deadline Mat");
-    TempWeekPlan[23][4].value = 1;
-    TempWeekPlan[23][4].elevtid = 3;
+    strcpy(TempWeekPlan[20][4].occasion, "Deadline Dansk");
+    TempWeekPlan[20][4].value = 1;
+    TempWeekPlan[20][4].elevtid = 5;
+    strcpy(TempWeekPlan[21][4].occasion, "Deadline Mat");
+    TempWeekPlan[21][4].value = 1;
+    TempWeekPlan[21][4].elevtid = 3;
     
     Deadline(24, 7, TempWeekPlan);
 
@@ -231,8 +231,8 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
         }
 
         if(go_to_sleep > 15){ //Til hvis de går i seng inden midnat, tallet er tilfældigt
-            if((wake_up + (24 - go_to_sleep)) < 8){
-                printf("The doctors recommend 8 hours of sleep a day\n");
+            if((wake_up + (24 - go_to_sleep)) < 7){
+                printf("The doctors recommend 7 - 9 hours of sleep a day\n");
                 printf("With this schedule you only get %d hours a day\n", (wake_up + (24 - go_to_sleep)));
                 printf("Please reconsider this in the future\n");
             }
@@ -241,7 +241,6 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                     strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                     TempWeekPlan[i][j].value = 1;
                     TempWeekPlan[go_to_sleep - 1][j].value = 1;
-                    //strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
                 }
             }
             for(i = 0; i <= wake_up; i++){
@@ -253,8 +252,8 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                 }
             }       
         } else if(go_to_sleep < 15){ //Hvis de går i seng efter midnat
-            if((wake_up - go_to_sleep) < 8){
-                printf("The doctors recommend 8 hours of sleep a day\n");
+            if((wake_up - go_to_sleep) < 7){
+                printf("The doctors recommend 7 - 9 hours of sleep a day\n");
                 printf("With this schedule you only get %d hours a day\n", (wake_up - go_to_sleep));
                 printf("Please reconsider this in the future\n");
             }
@@ -267,14 +266,11 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                     if(go_to_sleep == 0){
                         if(j == 0){
                             TempWeekPlan[23][6].value = 1;
-                            //strcpy(TempWeekPlan[23][6].occasion, "Stupid");
                         } else {
                         TempWeekPlan[23][j - 1].value = 1;
-                        //strcpy(TempWeekPlan[23][j - 1].occasion, "Stupid");
                         }
                     } else{
                         TempWeekPlan[go_to_sleep - 1][j].value = 1;
-                        //strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
                     }
                 }
             }
@@ -295,8 +291,8 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
             }
         
             if(go_to_sleep > 15){ //Til hvis de går i seng inden midnat, tallet er tilfældigt
-                if((wake_up + (24 - go_to_sleep)) < 8){
-                    printf("The doctors recommend 8 hours of sleep a day\n");
+                if((wake_up + (24 - go_to_sleep)) < 7){
+                    printf("The doctors recommend 7 - 9 hours of sleep a day\n");
                     printf("With this schedule you only get %d hours a day\n", (wake_up + (24 - go_to_sleep)));
                     printf("Please reconsider this in the future\n");
                 }
@@ -305,7 +301,6 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                         strcpy(TempWeekPlan[i][j].occasion, "Sleep"); 
                         TempWeekPlan[i][j].value = 1;
                         TempWeekPlan[go_to_sleep - 1][j].value = 1;
-                        //strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
                     }
                 }
                 for(i = 0; i <= wake_up; i++){
@@ -320,12 +315,11 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                     strcpy(TempWeekPlan[i][6].occasion, "Sleep"); 
                     TempWeekPlan[i][6].value = 1;
                     TempWeekPlan[go_to_sleep - 1][6].value = 1;
-                    //strcpy(TempWeekPlan[go_to_sleep - 1][6].occasion, "Stupid");
                 }
 
             } else if(go_to_sleep < 15){
-                if((wake_up - go_to_sleep) < 8){
-                    printf("The doctors recommend 8 hours of sleep a day\n");
+                if((wake_up - go_to_sleep) < 7){
+                    printf("The doctors recommend 7 - 9 hours of sleep a day\n");
                     printf("With this schedule you only get %d hours a day\n", (wake_up - go_to_sleep));
                     printf("Please reconsider this in the future\n");
                 }
@@ -338,14 +332,11 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                         if(go_to_sleep == 0){
                             if(j == 0){
                                 TempWeekPlan[23][6].value = 1;
-                                //strcpy(TempWeekPlan[23][6].occasion, "Stupid");
                             } else {
                                 TempWeekPlan[23][j - 1].value = 1;
-                                //strcpy(TempWeekPlan[23][j - 1].occasion, "Stupid");
                             } 
                         } else {
                             TempWeekPlan[go_to_sleep - 1][j].value = 1;
-                            //strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
                         }
                     }
                 }
@@ -356,8 +347,8 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
             scanf(" %d", &wake_up);
 
             if(go_to_sleep > 15){ //Til hvis de går i seng inden midnat, tallet er tilfældigt
-                if((wake_up + (24 - go_to_sleep)) < 8){
-                    printf("The doctors recommend 8 hours of sleep a day\n");
+                if((wake_up + (24 - go_to_sleep)) < 7){
+                    printf("The doctors recommend 7 - 9 hours of sleep a day\n");
                     printf("With this schedule you only get %d hours a day\n", (wake_up + (24 - go_to_sleep)));
                     printf("Please reconsider this in the future\n");
                 }
@@ -378,8 +369,8 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                     }
                 }
             } else if(go_to_sleep < 15){
-                if((wake_up - go_to_sleep) < 8){
-                    printf("The doctors recommend 8 hours of sleep a day\n");
+                if((wake_up - go_to_sleep) < 7){
+                    printf("The doctors recommend 7 - 9 hours of sleep a day\n");
                     printf("With this schedule you only get %d hours a day\n", (wake_up - go_to_sleep));
                     printf("Please reconsider this in the future\n");
                 }
@@ -392,14 +383,11 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                         if(go_to_sleep == 0){
                             if(j == 0){
                                 TempWeekPlan[23][6].value = 1;
-                                //strcpy(TempWeekPlan[23][6].occasion, "Stupid");
                             } else {
                                 TempWeekPlan[23][j - 1].value = 1;
-                                //strcpy(TempWeekPlan[23][j - 1].occasion, "Stupid");
                             } 
                         } else {
                             TempWeekPlan[go_to_sleep - 1][j].value = 1;
-                            //strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
                         }
                     }
                 }
@@ -413,8 +401,8 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
             scanf(" %d", &wake_up);
         
             if(go_to_sleep > 15){ //Til hvis de går i seng inden midnat, tallet er tilfældigt
-                if((wake_up + (24 - go_to_sleep)) < 8){
-                    printf("The doctors recommend 8 hours of sleep a day\n");
+                if((wake_up + (24 - go_to_sleep)) < 7){
+                    printf("The doctors recommend 7 - 9 hours of sleep a day\n");
                     printf("With this schedule you only get %d hours a day\n", (wake_up + (24 - go_to_sleep)));
                     printf("Please reconsider this in the future\n");
                 }
@@ -442,8 +430,8 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                 }
 
             } else if(go_to_sleep < 15){
-                if((wake_up - go_to_sleep) < 8){
-                    printf("The doctors recommend 8 hours of sleep a day\n");
+                if((wake_up - go_to_sleep) < 7){
+                    printf("The doctors recommend 7 - 9 hours of sleep a day\n");
                     printf("With this schedule you only get %d hours a day\n", (wake_up - go_to_sleep));
                     printf("Please reconsider this in the future\n");
                 }
@@ -456,14 +444,11 @@ void sleep(int tasks, int days, event TempWeekPlan[tasks][days]){
                         if(go_to_sleep == 0){
                             if(j == 0){
                                 TempWeekPlan[23][6].value = 1;
-                                //strcpy(TempWeekPlan[23][6].occasion, "Stupid");
                             } else {
                                 TempWeekPlan[23][j - 1].value = 1;
-                                //strcpy(TempWeekPlan[23][j - 1].occasion, "Stupid");
                             } 
                         }else {
                             TempWeekPlan[go_to_sleep - 1][j].value = 1;
-                            //strcpy(TempWeekPlan[go_to_sleep - 1][j].occasion, "Stupid");
                         }
                     }
                 }
@@ -635,7 +620,7 @@ void ReassignEvent(int tasks, int days, event tempPlan[tasks][days], event reass
     //Det er godt idet kan reschedule flere events ad gangen men skal man så ikke samtidig køre et indre while loop eller flere
     //der styrer de ting som while-looppet styrede i ReassignD()?
     while (run == 0) {
-        printf("If you do not wish to reschedule any events, type 1: \n"); 
+        printf("If you do not wish to reschedule any events, type 1, for rescheduling, type 2: \n"); 
         scanf(" %d", &choose); 
         if (choose == 1) {
             run = 1; 
@@ -770,7 +755,8 @@ void Deadline(int tasks, int days, event TempWeekPlan[tasks][days]){ //NOT DONE!
         for(j = 0; j < 7; j++){
             /*if(strcmp(TempWeekPlan[i][j].occasion, "Deadline") == 0){*/
             if(TempWeekPlan[i][j].elevtid > 0){
-                printf("You have a deadline %d:00 on day %d in the week\n", i, (j + 1));
+                printf("You have a %s due at %d:00 on day %d in the week\n", TempWeekPlan[i][j].occasion, i, (j + 1));
+                printf("It takes about %d hours\n", TempWeekPlan[i][j].elevtid);
                 printf("How much time do you want to spend on it?\n");
                 scanf(" %d", &TempWeekPlan[i][j].elevtid);
                 printf("How important is this assignment? 1 = Urgent, 2 = Neutral, 3 = Unimportant\n");
