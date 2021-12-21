@@ -681,6 +681,7 @@ void ReassignEvent(int tasks, int days, event tempPlan[tasks][days], event reass
                                     printDemoSchedule(24, 7, reassignedarray);
                                     printf("You have now planned the event %s for hour %d on day %d.\nNow you will be asked about rescheduling event %s\n", reassignedarray[endhour][endday].occasion, endhour, endday, tempPlan[i][j]);
                                     printf("You will have to enter %d for the first value of day, %d for the second value of hour to reschedule the event %s\n", startday, starthour, tempPlan[i][j]);
+                                    scanf(" %d %d", &startday, &starthour);
                                     //Now I have to put the variables back into the start-variables so the whole thing can run again
                                     strcpy(tempPlan[starthour][startday].occasion, tempPlan[i][j].occasion);
                                     tempPlan[starthour][startday].value = 1;
@@ -776,7 +777,12 @@ void Deadline(int tasks, int days, event TempWeekPlan[tasks][days]){ //NOT DONE!
                         }
                     }
                 }
-            } else if(TempWeekPlan[i][j].priority == 2){
+            } 
+        }
+    }
+    for(i = 0; i < 24; i++){
+        for(j = 0; j < 7; j++){
+            if(TempWeekPlan[i][j].priority == 2){
                 for(l = 0; l < j; l++){
                     for(k = 0; k < 24; k++){
                         if(TempWeekPlan[k][l].value == 0 && TempWeekPlan[i][j].elevtid != 0){
@@ -786,7 +792,12 @@ void Deadline(int tasks, int days, event TempWeekPlan[tasks][days]){ //NOT DONE!
                         }
                     }
                 }
-            } else if(TempWeekPlan[i][j].priority == 3){
+            }
+        }
+    } 
+    for(i = 0; i < 24; i++){
+        for(j = 0; j < 7; j++){
+            if(TempWeekPlan[i][j].priority == 3){
                 for(l = 0; l < j; l++){
                     for(k = 0; k < 24; k++){
                         if(TempWeekPlan[k][l].value == 0 && TempWeekPlan[i][j].elevtid != 0){
