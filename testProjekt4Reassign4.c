@@ -8,7 +8,6 @@
 struct event {
     char occasion[15]; //10-tallet antallet af characters der er plads til i char-strengen
     unsigned int value; //vigigt at alle starter med 0
-    //int priority; //mangler prioritering + evt andet?
     int elevtid;
     int priority;
 }
